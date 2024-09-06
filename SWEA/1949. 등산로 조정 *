@@ -1,0 +1,114 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+class Solution {
+
+	static int T;
+	static int N;
+	static int K; // 공사가능 깊이
+
+	static int max;
+
+	static int[][] arr;
+
+	static int distance;
+	static int max_distance;
+
+	static boolean[][] visited;
+
+	static int[] di = { 1, 0, -1, 0 };
+	static int[] dj = { 0, -1, 0, 1 };
+
+	static int ci;
+	static int cj;
+
+	public static void main(String args[]) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		T = Integer.parseInt(st.nextToken());
+		for (int test_case = 1; test_case <= T; test_case++) {
+
+			st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+
+			arr = new int[N][N];
+			visited = new boolean[N][N];
+
+			max = 0;
+			max_distance = 0;
+			// 최고봉우리 탐색 및 지도 그리기
+			for (int i = 0; i < N; i++) {
+				st = new StringTokenizer(br.readLine());
+				for (int j = 0; j < N; j++) {
+					arr[i][j] = Integer.parseInt(st.nextToken());
+					if (max < arr[i][j]) {
+						max = arr[i][j];
+					}
+				}
+			}
+
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (arr[i][j] == max) {
+						// 돌려줄 ci,cj 
+						ci = i;
+						cj = j;
+						for (int k = 0; k < N; k++) {
+							for (int l = 0; l < N; l++) {
+								if (i != k && j != l) {
+									arr[k][l] -= K; // k만큼 깎아줌
+									distance = 1; // 거리 1로 초기화
+									visited[ci][cj] = true;
+									dfs(ci, cj);
+									// 깎은 높이 초기화 및 방문 초기화
+									arr[k][l] += K;
+									for (boolean[] visit : visited) {
+										Arrays.fill(visit, false);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("#" + test_case + " " + max_distance);
+			System.out.println(sb.toString());
+			
+
+		} // tc
+	}// m
+
+	private static void dfs(int ci, int cj) {
+		// 어차피 돌다가 뭐 없으면 자동 종료될거라 기저조건 x
+		if (distance > max_distance) {
+			max_distance = distance;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			int newci = ci + di[i];
+			int newcj = cj + dj[i];
+			if ((newci >= 0 && newci < N && newcj >= 0 && newcj < N) && visited[newci][newcj] == false
+					&& arr[ci][cj] > arr[newci][newcj]) {
+				visited[newci][newcj] = true;
+				distance += 1;
+				dfs(newci, newcj);
+				distance -= 1;
+				visited[newci][newcj] = false;
+
+			}
+		}
+
+	}
+
+}// c
+
+// 가장 높은 봉우리 탐색
+// 사방으로 낮은 지점 탐색, DFS시작
+// 봉우리 하나 K만큼 깎은거 그래프 제공
