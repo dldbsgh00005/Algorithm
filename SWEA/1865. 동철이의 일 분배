@@ -59,7 +59,7 @@ class Solution {
 	static int dfs(int depth) {
 		
 		if(mul <= max) {
-			return 0;
+			return 0; 							// 이 부분, 왜 되는거지? MUL이 중간에 MAX 보다 웬만하면 무조건 작을텐데 .... ??
 		}
 		
 		if (depth == N) {
