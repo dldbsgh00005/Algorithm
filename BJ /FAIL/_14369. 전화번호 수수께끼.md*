@@ -1,3 +1,4 @@
+```
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -74,3 +75,5 @@ class Solution {
 // 리스트에 넣고 하나하나 완저탐색 돌려서 문자열로 받는다
 // 한 번 받을 때마다 arraylist의 요소들과 비교하여 있으면 hashmap에 매핑하여 값을 리스트에 넣어준다
 // 리스트가 완성되면 버블정렬 해준다.
+
+```
